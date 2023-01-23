@@ -1,0 +1,17 @@
+{
+  "name": "FrontendMovies",
+  "version": "1.0.0",
+  "description": "",
+  "main": "script.js",
+  "dependencies": {
+    "cypress": "^8.3.0",
+    "express": "^4.18.2",
+    "serve": "^12.0.0"
+  },
+  "scripts": {
+    "cy:open": "cypress open",
+    "start": "serve ./"
+  },
+  "author": "",
+  "license": "ISC"
+}
