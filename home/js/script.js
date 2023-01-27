@@ -3,6 +3,14 @@ const btnPrev = document.querySelector('.btn-prev');
 const btnNext = document.querySelector('.btn-next');
 const input = document.querySelector('.input');
 
+const highlightVideoLink = document.querySelector('.highlight__video-link');
+const highlightVideo = document.querySelector('.highlight__video');
+const highlightTitle = document.querySelector('.highlight__title');
+const highlightRating = document.querySelector('.highlight__rating');
+const highlightGenres = document.querySelector('.highlight__genres');
+const highlightLaunch = document.querySelector('.highlight__launch');
+const highlightDescripition = document.querySelector('.highlight__description');
+
 let currentPage = 0;
 let currentMovies = [];
 
@@ -110,7 +118,41 @@ function loadMovies() {
     });
 }
 
+function loadHighlightMovie() {
+    const basePromise = fetch(`https://tmdb-proxy.cubos-academy.workers.dev/3/movie/436969?language=pt-BR`);
+
+    basePromise.then(function (response) {
+        const bodyPromise = response.json();
+
+        bodyPromise.then(function (body) {
+            highlightVideo.style.background = `linear-gradient(rgba(0, 0, 0, 0.6) 100%, rgba(0,0,0, 0.6) 100%), url('${body.backdrop_path}') no-repeat center / cover`;
+            highlightTitle.textContent = body.title;
+            highlightRating.textContent = body.vote_average;
+            highlightGenres.textContent = body.genres.map(function (genre){ 
+                return genre.name;
+            }).join(', ');
+            highlightLaunch.textContent = (new Date(body.release_date)).toLocaleDateString('pt-BR', {year: "numeric", month: "long", day: "numeric" });
+            highlightDescripition.textContent = body.overview;    
+
+            
+        })
+    });
+
+    const linkPromise = fetch('https://tmdb-proxy.cubos-academy.workers.dev/3/movie/436969/videos?language=pt-BR');
+
+    linkPromise.then(function (response) {
+        const bodyPromise = response.json();
+
+        bodyPromise.then(function (body) {
+            highlightVideoLink.href = `https://www.youtube.com/watch?v=${body.results[0].key}`;
+        })
+    })
+
+
+}
+
 loadMovies();
+loadHighlightMovie();
 
 
 
